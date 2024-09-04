@@ -74,7 +74,7 @@ tasks = [
   {
     name: "graphdex",
     task: require(prefix + "graphdex.js"),
-    interval: 1 * 60 * 60 * 1000,
+    interval: 1 * 60 * 60 * 1000,  
   },
   {
     name: "hamasterKombat",

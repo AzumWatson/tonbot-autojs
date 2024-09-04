@@ -21,9 +21,18 @@ function start() {
         log("click", p.text());
         sleep(5000);
       }
-    } while (!p);
+    } while (p);
   } catch (e) {}
 }
 
 module.exports = { start };
 // start();
+// do {
+//   p = textMatches(reg).findOne(5000);
+//   log(p);
+//   if (p) {
+//     p.click();
+//     log("click", p.text());
+//     sleep(5000);
+//   }
+// } while (!p);
