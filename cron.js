@@ -20,7 +20,7 @@ function checkIn() {
 }
 
 function earn() {
-  className("android.widget.Image").text("Main").findOne().parent().click();
+  className("android.widget.Image").text("Main").findOne(1000).parent().click();
   sleep(1000);
   let reg = /(.*COLLECT YOUR EARNED.*)|(.*EARN \$CORNIO.*)/;
   do {

@@ -75,7 +75,6 @@ module.exports = { start };
 // start();
 // fullEnergy();
 // taptap();
-// className("android.widget.ListView").findOne().children().forEach(child => {
 //   var target = child.findOne(className("android.view.View").desc("Clicker"));
 //   target.;
 //   });

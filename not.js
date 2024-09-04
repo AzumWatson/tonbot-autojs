@@ -9,8 +9,14 @@ function taptap() {
   if (p) {
     log("tap tap");
     p.click();
-    cx = className("android.widget.FrameLayout").findOne().bounds().centerX();
-    cy = className("android.widget.FrameLayout").findOne().bounds().centerY();
+    cx = className("android.widget.FrameLayout")
+      .findOne(100)
+      .bounds()
+      .centerX();
+    cy = className("android.widget.FrameLayout")
+      .findOne(100)
+      .bounds()
+      .centerY();
     for (i = 0; i < 1000; i++) {
       press(randomPress(cx), randomPress(cy), 50);
       sleep(50);

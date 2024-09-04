@@ -95,5 +95,4 @@ module.exports = { start };
 // start();
 // taptap();
 // fullEnergy();
-// var w = text("ELSE").boundsInside(0, 0, 470, 550).findOne();
 // log(w.text());
