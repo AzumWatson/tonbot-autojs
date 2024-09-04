@@ -78,7 +78,7 @@ tasks = [
   },
   {
     name: "hamasterKombat",
-    task: require(prefix + "grahamasterKombathdex.js"),
+    task: require(prefix + "hamasterKombat.js"),
     interval: 1 * 60 * 60 * 1000,
   },
   {
