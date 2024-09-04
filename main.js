@@ -77,6 +77,11 @@ tasks = [
     interval: 1 * 60 * 60 * 1000,
   },
   {
+    name: "hamasterKombat",
+    task: require(prefix + "grahamasterKombathdex.js"),
+    interval: 1 * 60 * 60 * 1000,
+  },
+  {
     name: "hexn",
     task: require(prefix + "hexn.js"),
     interval: 1 * 60 * 60 * 1000,

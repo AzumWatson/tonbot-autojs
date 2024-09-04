@@ -31,12 +31,18 @@ function ocrBound(dest, timeOut) {
 function checkWidget(x0, y0, x1, y1) {
   ps = boundsInside(x0, y0, x1, y1).untilFind();
   for (let i = 0; i < ps.length; i++) {
-    log(ps[i].className(), ps[i].bounds(), ps[i].text(), ps[i].desc());
+    log(
+      ps[i].bounds().width(),
+      ps[i].bounds().height(),
+      ps[i].className(),
+      ps[i].bounds(),
+      ps[i].text(),
+      ps[i].desc()
+    );
   }
 }
 
 function randP(x, offset) {
-  log(x, offset);
   return x + Math.random() * offset * 2 - offset;
 }
 function randomPress(x, y, offset, delay) {
