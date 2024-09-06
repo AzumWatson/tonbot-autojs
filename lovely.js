@@ -1,4 +1,5 @@
 let addr = "https://t.me/LovelyLegends_bot/start?startapp=kentId1000710062";
+const utils = require("/sdcard/sc/utils.js");
 function taptap() {
   p = className("android.view.View").desc("Clicker").findOne(1000);
   if (p) {
@@ -29,9 +30,14 @@ function checkIn() {
     p = className("android.widget.TextView").text("DAILY").findOne(1000);
     if (p) {
       p.click();
+      sleep(2000);
       p = className("android.widget.Button").text("Claim reward").findOne(100);
       if (p) {
         p.click();
+      }
+      p = utils.findWidgetInSize("android.widget.Button", 32, 31, 5000);
+      if (p) {
+        press(p.bounds().centerX(), p.bounds().centerY(), 20);
       }
     }
   }
@@ -53,7 +59,16 @@ function fullEnergy() {
         if (p) {
           p.click();
           sleep(1000);
-          taptap();
+          // taptap();
+        }
+      } else {
+        p = utils.findWidgetInSize("android.widget.Button", 32, 33, 5000);
+        if (p) {
+          press(p.bounds().centerX(), p.bounds().centerY(), 20);
+        }
+        p = utils.findWidgetInSize("android.widget.Button", 32, 32, 5000);
+        if (p) {
+          press(p.bounds().centerX(), p.bounds().centerY(), 20);
         }
       }
     }
@@ -65,7 +80,9 @@ function start() {
     .textContains("rain")
     .findOne(60 * 1000);
   if (!p) return;
-  //check in
+  if (text("Get It").findOne(5000)) {
+    text("Get It").click();
+  }
   taptap();
   fullEnergy();
   checkIn();
@@ -73,11 +90,16 @@ function start() {
 
 module.exports = { start };
 // start();
+
 // fullEnergy();
 // taptap();
+// fullEnergy();
+
 //   var target = child.findOne(className("android.view.View").desc("Clicker"));
 //   target.;
 //   });
-
 // .parent()
 // .findOne(textMatches(/\d+/));
+// bounds("(436,520,468,553)")
+// p = boundsInside(436, 520, 468, 553).findOne(1000);
+// log(p.bounds().width(), p.bounds().height(), p.className());

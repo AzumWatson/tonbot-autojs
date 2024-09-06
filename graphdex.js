@@ -1,7 +1,7 @@
 let addr = "https://t.me/graph_dex_bot?start=1000710062";
-
+const utils = require("/sdcard/sc/utils.js");
 function floki() {
-  p = className("android.widget.Button").textContains("Floki").findOne(5000);
+  p = className("android.widget.Button").textContains("Doge").findOne(5000);
   if (p) {
     log("claim Floki");
     p.click();
@@ -57,12 +57,23 @@ function start() {
     if (p) {
       log("air drop");
       p.click();
-      // floki()
+      floki();
     }
   } else {
     log("not found ");
   }
 }
 
+function doTask() {
+  press(232, 193, 50);
+  sleep(5000);
+  if (text("Cancel").exists()) {
+    text("Cancel").click();
+  }
+  press(229, 919, 50);
+  sleep(1200);
+  press(229, 863, 50);
+}
+// bounds("(405,228,435,260)")
 module.exports = { start };
 // start();

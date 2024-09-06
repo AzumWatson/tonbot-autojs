@@ -1,7 +1,7 @@
 let addr = "https://t.me/Tomarket_ai_bot/app?startapp=0000gW9c";
 function start() {
   app.openUrl(addr);
-  reg = /(continue)|(Start farming)|(Play now)/;
+  reg = /(Continue)|(Start farming)|(Play now)/;
   p = textMatches(reg).findOne(60 * 1000);
   if (!p) {
     log("no wait");

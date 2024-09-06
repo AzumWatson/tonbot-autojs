@@ -5,6 +5,7 @@ function taptap() {
   const button = className("android.widget.Button")
     .text("Hamster Kombat")
     .findOne(1000);
+  sleep(2000);
   for (var i = 0; i < 2000; i++) {
     if (i % 50 == 0) {
       let p = textMatches(/\d+.*\/.*\d+00/)
@@ -27,35 +28,49 @@ function checkIn() {
     .parent()
     .parent()
     .click();
-  className("android.widget.Image")
-    .text("calendar")
-    .findOne(5000)
-    .parent()
-    .parent()
-    .click();
-  className("android.widget.Button").text("Claim").findOne(5000).click();
-  sleep(6000);
+
+  daily = className("android.widget.TextView")
+    .text("Daily reward")
+    .findOne(1000);
+  if (daily.parent().child(2).bounds().width() > 20) {
+    daily.parent().click();
+    className("android.widget.Button").text("Claim").findOne(5000).click();
+    sleep(6000);
+  }
 }
 function refull() {
   text("Boost").findOne(1000).click();
-  sleep(1000);
+  sleep(3000);
   className("android.widget.TextView")
     .text("Full energy")
     .findOne(5000)
     .parent()
     .click();
-  className("android.widget.Button").text("Go ahead").findOne(5000).click();
-  sleep(3000);
-  taptap();
+  p = className("android.widget.Button").text("Go ahead").findOne(5000);
+  if (p) {
+    p.click();
+    sleep(3000);
+    taptap();
+  } else {
+    className("android.widget.ImageView").desc("Go back").findOne(1000).click();
+  }
 }
 function start() {
   app.openUrl(addr);
-  p = textContains("rain").findOne(60 * 1000);
+  p = textMatches("/d+.*/.*d+00/").findOne(60 * 1000);
   if (!p) {
     log("not wait");
     return;
   }
+  sleep(3000);
   try {
+    count = 0;
+    reg = /(Claim)|(Close)|(Thank you.*)/;
+    while (textMatches(reg).exists() && count < 10) {
+      textMatches(reg).findOne().click();
+      sleep(2000);
+      count++;
+    }
     taptap();
     refull();
     checkIn();
@@ -64,11 +79,36 @@ function start() {
   }
 }
 
+const key = ["---", "-.", "-.-.", "....", ".-", "..", "-."]; //ONCHAIN
+function sendKey(key) {
+  for (let i = 0; i < key.length; i++) {
+    if (key[i] == ".") {
+      utils.randomPress(255, 709, 20, 60);
+    } else {
+      utils.randomPress(255, 709, 20, 1000);
+    }
+    sleep(180);
+  }
+}
+function cipher() {
+  t = 350;
+  for (let i = 0; i < key.length - 4; i++) {
+    sendKey(key[i]);
+    sleep(4000);
+  }
+}
+// cipher();
+// sendKey(key[3]);
 module.exports = { start };
 // start();
+
+
+// cipher();
 // utils.checkWidget(0, 465, 480, 854);
 // taptap();
 // refull();
 // p = text("Full energy").findOne(1000);
 // log(p);
 // checkIn();
+// p = className("android.widget.TextView").text("Full energy").findOne(1000);
+// log(p);

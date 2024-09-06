@@ -1,4 +1,5 @@
-let addr = "https://t.me/duckscoop_bot/app?startapp=A9tkeRQY1u";
+const addr = "https://t.me/duckscoop_bot/app?startapp=A9tkeRQY1u";
+const utils = require("/sdcard/sc/utils.js");
 function checkIn() {
   p = textMatches(/Check-in/).findOne(1000);
   if (p) {
@@ -11,23 +12,20 @@ function checkIn() {
     if (p) {
       p.click();
       sleep(2000);
-      closeButton();
+      closePopup();
     }
   }
 }
-function closeButton() {
-  p = className("android.widget.Button").clickable(true).findOne(100);
-  if (p) {
-    ps = className("android.widget.Button").clickable(true).untilFind();
-    for (let i = 0; i < ps.length; i++) {
-      p = ps[i];
-      if (p.bounds().height() == 22 && p.bounds().width() == 20) {
-        p.click();
-        sleep(1000);
-        return;
-      }
+function closePopup() {
+  let count = 0;
+  do {
+    p = utils.findWidgetInSize("android.widget.Button", 20, 22, 5000);
+    if (p) {
+      p.click();
+      sleep(1000);
     }
-  }
+    count++;
+  } while (p && count < 5);
 }
 
 function start() {
@@ -35,9 +33,16 @@ function start() {
   p = textContains("Check-in").findOne(30 * 1000);
   if (!p) return;
 
-  closeButton();
+  closePopup();
+  log("closePopup");
   checkIn();
+  log("checkIn");
 }
-
+function taskGo() {
+  if (className("android.widget.Button").text("Go").exists()) {
+    p = className("android.widget.Button").text("Go").click();
+    log(p.length);
+  }
+}
 module.exports = { start };
 // start();

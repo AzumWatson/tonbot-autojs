@@ -26,8 +26,21 @@ function start() {
     }
   }
 }
-
+function doTask(name, widget) {
+  widget = widget || "android.widget.Button";
+  if (className(widget).text(name).exists()) {
+    p = className(widget).text(name).click();
+    log(p.length);
+  }
+}
+function doTaskAll() {
+  doTask("START");
+  sleep(16 * 1000);
+  doTask("CLAIM");
+}
 module.exports = { start };
+// doTask("CLAIM");
+
 // start();
 // left = 414;
 // top = 345;

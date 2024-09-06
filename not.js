@@ -105,5 +105,5 @@ function start() {
 }
 
 module.exports = { start };
-start();
+// start();
 // spin();

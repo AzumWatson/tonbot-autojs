@@ -51,4 +51,27 @@ function randomPress(x, y, offset, delay) {
   return press(randP(x, offset), randP(y, offset), delay);
 }
 
-module.exports = { captureAndOcr, ocrBound, checkWidget, randomPress };
+function findWidgetInSize(name, width, height, timeOut) {
+  let startTime = Date.now();
+  while (Date.now() - startTime < timeOut) {
+    if (className(name).exists()) {
+      let ps = className(name).untilFind();
+      for (let i = ps.length; i > 0; i--) {
+        let p = ps[i - 1];
+        let bounds = p.bounds();
+        if (bounds.width() == width && bounds.height() == height) {
+          return p;
+        }
+      }
+      sleep;
+    }
+  }
+  return null;
+}
+module.exports = {
+  captureAndOcr,
+  ocrBound,
+  checkWidget,
+  randomPress,
+  findWidgetInSize,
+};

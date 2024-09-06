@@ -67,6 +67,11 @@ tasks = [
     interval: 45 * 60 * 1000,
   },
   {
+    name: "faston",
+    task: require(prefix + "faston.js"),
+    interval: 45 * 60 * 1000,
+  },
+  {
     name: "goat",
     task: require(prefix + "goat.js"),
     interval: 1 * 60 * 60 * 1000,
@@ -74,12 +79,12 @@ tasks = [
   {
     name: "graphdex",
     task: require(prefix + "graphdex.js"),
-    interval: 1 * 60 * 60 * 1000,  
+    interval: 1 * 60 * 60 * 1000,
   },
   {
     name: "hamasterKombat",
     task: require(prefix + "hamasterKombat.js"),
-    interval: 1 * 60 * 60 * 1000,
+    interval: 30 * 60 * 1000,
   },
   {
     name: "hexn",
@@ -175,17 +180,21 @@ TaskScheduler.prototype.schedule = function () {
         log("start", taskInfo.name);
         taskInfo.task.start(); // 执行任务
         sleep(1000);
-        let b = className("android.widget.ImageView")
-          .desc("Go back")
-          .findOne(100);
-        if (b) {
-          b.click();
-          b = className("android.widget.TextView")
-            .text("Close anyway")
-            .findOne(1000);
+        while (
+          className("android.widget.ImageView").desc("Go back").findOne(2000)
+        ) {
+          let b = className("android.widget.ImageView")
+            .desc("Go back")
+            .findOne(100);
           if (b) {
             b.click();
-            sleep(1000);
+            b = className("android.widget.TextView")
+              .text("Close anyway")
+              .findOne(1000);
+            if (b) {
+              b.click();
+              sleep(1000);
+            }
           }
         }
       }

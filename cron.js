@@ -64,7 +64,7 @@ function fight() {
           p.click();
           p = className("android.widget.Button")
             .text("FIGHT")
-            .findOne(60 * 1000);
+            .findOne(2 * 60 * 1000);
           if (p) {
             let img, imgDest, rt;
             for (let i = 0; i < 60; i++) {
