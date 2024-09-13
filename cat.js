@@ -4,4 +4,3 @@ function start() {
 }
 // module.export = { start };
 start();
-

@@ -23,15 +23,17 @@ function havest() {
   p = className("android.widget.TextView")
     .text("Share Banana to get more")
     .findOne(1000);
-  log("p", p);
   if (p) {
     h = p.parent().parent().findOne(textMatches(/\d+/));
     if (h) {
       number = parseInt(h.text());
       if (number > 0) {
         p.click();
-        log("click havest", p.bounds());
-        bound = utils.ocrBound("Share with friends", 10000);
+        bound = utils.ocrBound("Get extra rewards", 5000);
+        if (bound) {
+          press(bound.centerX(), bound.centerY(), 50);
+        }
+        bound = utils.ocrBound("Share with friends", 23000);
         if (bound) {
           press(bound.centerX(), bound.centerY(), 50);
           p = className("android.widget.FrameLayout")
@@ -52,8 +54,8 @@ function havest() {
 }
 
 function start() {
-  app.openUrl(addr);
-  p = textMatches(/\d+\/\d+0/).findOne(40 * 1000);
+  // app.openUrl(addr);
+  p = textMatches(/\d+\/\d+/).findOne(40 * 1000);
   if (!p) {
     log("banana not found");
     return;
@@ -84,7 +86,13 @@ function start() {
   havest();
 }
 
-module.exports = { start };
+// module.exports = { start };
+// start();
+// if (!requestScreenCapture()) {
+//   toast("请求截图失败");
+//   exit();
+// }
+
 // start();
 // havest();
 // if (!requestScreenCapture()) {
@@ -96,3 +104,6 @@ module.exports = { start };
 // }
 // bound = utils.ocrBound("Share with friends", 5000);
 // log(bound);
+// p = className("android.widget.TextView").text("Claim").findOne(100);
+// p = className("android.view.View").text("Claim").findOne(1000);
+// log(p);

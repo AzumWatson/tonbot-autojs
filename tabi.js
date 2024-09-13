@@ -43,14 +43,15 @@ function start() {
   p.click();
   sleep(2000);
 
-  checkIn();
-
   p = className("android.widget.TextView").text("Claim").findOne(100);
   if (p) {
     p.click();
     sleep(1000);
     press(239, 740, 50);
   }
+  sleep(2000);
+
+  checkIn();
   sleep(2000);
 }
 module.exports = { start };

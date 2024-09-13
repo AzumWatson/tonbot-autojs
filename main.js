@@ -13,10 +13,6 @@
 //     }
 //   });
 // }
-if (!requestScreenCapture()) {
-  toast("请求截图失败");
-  exit();
-}
 
 prefix = "/sdcard/sc/";
 tasks = [
@@ -28,12 +24,12 @@ tasks = [
   {
     name: "banana",
     task: require(prefix + "banana.js"),
-    interval: 1 * 60 * 60 * 1000,
+    interval: 1 * 3600 * 1000,
   },
   {
     name: "bby",
     task: require(prefix + "bby.js"),
-    interval: 1 * 60 * 60 * 1000,
+    interval: 1 * 3600 * 1000,
   },
 
   {
@@ -45,6 +41,11 @@ tasks = [
     name: "boom",
     task: require(prefix + "boom.js"),
     interval: 1 * 60 * 60 * 1000,
+  },
+  {
+    name: "capybara",
+    task: require(prefix + "capybara.js"),
+    interval: 2 * 60 * 60 * 1000,
   },
   {
     name: "cron",
@@ -64,7 +65,7 @@ tasks = [
   {
     name: "else",
     task: require(prefix + "else.js"),
-    interval: 45 * 60 * 1000,
+    interval: 20 * 60 * 1000,
   },
   {
     name: "faston",
@@ -83,8 +84,8 @@ tasks = [
   },
   {
     name: "hamasterKombat",
-    task: require(prefix + "hamasterKombat.js"),
-    interval: 30 * 60 * 1000,
+    task: require(prefix + "hamsasterKombat.js"),
+    interval: 15 * 60 * 1000,
   },
   {
     name: "hexn",
@@ -97,6 +98,11 @@ tasks = [
     interval: 1 * 60 * 60 * 1000,
   },
   {
+    name: "major",
+    task: require(prefix + "major.js"),
+    interval: 1 * 60 * 60 * 1000, //107912
+  },
+  {
     name: "not",
     task: require(prefix + "not.js"),
     interval: 1 * 60 * 60 * 1000, //107912
@@ -107,20 +113,25 @@ tasks = [
     interval: 40 * 60 * 1000, //107912
   },
   {
+    name: "piggy",
+    task: require(prefix + "piggy.js"),
+    interval: 2 * 60 * 60 * 1000,
+  },
+  {
     name: "pingo",
     task: require(prefix + "pingo.js"),
     interval: 12 * 60 * 60 * 1000,
+  },
+  {
+    name: "tabcoin",
+    task: require(prefix + "tabcoin.js"),
+    interval: 1 * 60 * 60 * 1000,
   },
   {
     name: "tomarket",
     task: require(prefix + "tomarket.js"),
     interval: 1 * 60 * 60 * 1000,
   },
-  // {
-  //   name: "sidekick",
-  //   task: require(prefix + "sidekick.js"),
-  //   interval: 15 * 60 * 1000,
-  // },
   {
     name: "tabi",
     task: require(prefix + "tabi.js"),

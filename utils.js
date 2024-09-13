@@ -1,4 +1,7 @@
-function captureAndOcr() {
+function captureAndOcr(offsetX, offsetY, level) {
+  offsetX = offsetX || 0;
+  offsetY = offsetY || 0;
+  level = level || 2;
   capturing = true;
 
   let img = captureScreen();
@@ -6,8 +9,21 @@ function captureAndOcr() {
     toastLog("截图失败");
   }
   let start = new Date();
+  img = images.clip(
+    img,
+    offsetX,
+    offsetY,
+    img.width - offsetX,
+    img.height - offsetY
+  );
   //结果转数组：层级：3
-  result = gmlkit.ocr(img, "la").toArray(2);
+  result = gmlkit.ocr(img, "la").toArray(level);
+  for (let i = 0; i < result.length; i++) {
+    result[i].bounds.top = result[i].bounds.top + offsetY;
+    result[i].bounds.left = result[i].bounds.left + offsetX;
+    result[i].bounds.bottom = result[i].bounds.bottom + offsetY;
+    result[i].bounds.right = result[i].bounds.right + offsetX;
+  }
   capturing = false;
   img.recycle();
   return result;
@@ -26,6 +42,25 @@ function ocrBound(dest, timeOut) {
   }
 
   return null;
+}
+
+function ocrMatches(dest, timeOut, level, offsetX, offsetY) {
+  offsetX = offsetX || 0;
+  offsetY = offsetY || 0;
+  level = level || 2;
+  timeOut = timeOut || 10;
+  const startTime = Date.now();
+  let result = [];
+  while (Date.now() - startTime < timeOut && result.length == 0) {
+    re = captureAndOcr(offsetX, offsetY, level);
+    for (let i = 0; i < re.length; i++) {
+      if (dest.test(re[i].text)) {
+        result.push({ bounds: re[i].bounds, text: re[i].text });
+      }
+    }
+    sleep(100);
+  }
+  return result;
 }
 
 function checkWidget(x0, y0, x1, y1) {
@@ -51,11 +86,11 @@ function randomPress(x, y, offset, delay) {
   return press(randP(x, offset), randP(y, offset), delay);
 }
 
-function findWidgetInSize(name, width, height, timeOut) {
+function findWidgetInSize(cname, width, height, timeOut) {
   let startTime = Date.now();
   while (Date.now() - startTime < timeOut) {
-    if (className(name).exists()) {
-      let ps = className(name).untilFind();
+    if (className(cname).exists()) {
+      let ps = className(cname).untilFind();
       for (let i = ps.length; i > 0; i--) {
         let p = ps[i - 1];
         let bounds = p.bounds();
@@ -68,10 +103,91 @@ function findWidgetInSize(name, width, height, timeOut) {
   }
   return null;
 }
+function findWidgetInSizeAll(name, width, height, timeOut) {
+  let startTime = Date.now();
+  let result = [];
+  while (Date.now() - startTime < timeOut && result.length == 0) {
+    if (className(name).exists()) {
+      let ps = className(name).untilFind();
+      log(ps.length);
+      for (let i = ps.length; i > 0; i--) {
+        let p = ps[i - 1];
+        let bounds = p.bounds();
+        if (bounds.width() == width)
+          log(bounds, bounds.width(), bounds.height());
+        if (bounds.width() == width && bounds.height() == height) {
+          result.push(p);
+        }
+      }
+      sleep;
+    }
+  }
+  return result;
+}
+
+function screenFindTemplate(
+  template,
+  timeOut,
+  offsetX,
+  offsetY,
+  threshold,
+  max
+) {
+  threshold = threshold || 0.7;
+  max = max || 1;
+  const startTime = Date.now();
+  while (Date.now() - startTime < timeOut) {
+    let img = captureScreen();
+    img = images.clip(
+      img,
+      offsetX,
+      offsetY,
+      img.width - offsetX,
+      img.height - offsetY
+    );
+    let rt = images.matchTemplate(img, template, {
+      threshold,
+      max,
+    });
+    log(rt);
+    if (rt && rt.matches.length > 0) {
+      let point = rt.matches[0].point;
+      return { x: point.x + offsetX, y: point.y + offsetY };
+    }
+    sleep(100);
+  }
+  return null;
+}
+
+if (!requestScreenCapture()) {
+  toast("请求截图失败");
+  exit();
+}
+
+function upgrade(level, wait) {
+  let reg = /lvl \d+/;
+  let p = textMatches(reg).findOne(1000);
+  if (p) {
+    ps = textMatches(reg).untilFind();
+    for (let i = 0; i < ps.length; i++) {
+      let p = ps[i];
+      let lvl = p.text().split(" ")[1];
+      if (lvl < level) {
+        p.parent().click();
+        text("Go ahead").findOne(2000).click();
+        sleep(wait);
+      }
+    }
+  }
+}
 module.exports = {
   captureAndOcr,
   ocrBound,
+  ocrMatches,
   checkWidget,
   randomPress,
   findWidgetInSize,
+  findWidgetInSizeAll,
+  screenFindTemplate,
+  upgrade,
 };

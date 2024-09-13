@@ -51,14 +51,14 @@ function start() {
       if (p) p.click();
     }
 
-    p = className("android.view.View")
-      .desc("AirDrops")
-      .findOne(10 * 1000);
-    if (p) {
-      log("air drop");
-      p.click();
-      floki();
-    }
+    // p = className("android.view.View")
+    //   .desc("AirDrops")
+    //   .findOne(10 * 1000);
+    // if (p) {
+    //   log("air drop");
+    //   p.click();
+    //   floki();
+    // }
   } else {
     log("not found ");
   }

@@ -1,6 +1,7 @@
 let addr = "https://t.me/BlumCryptoBot/app?startapp=ref_V7Ystpy2Bm";
+const utils = require("/sdcard/sc/utils.js");
 function play() {
-  p = className("android.widget.TextView").text("Play").findOne(1000);
+  p = textContains("Play").findOne(1000);
   if (p) {
     p.click();
     sleep(500);
@@ -8,19 +9,20 @@ function play() {
     return;
   }
 
+  log("start play");
   let img, imgDest, rt;
-  imgDest = images.read("/mnt/windows/Pictures/snow.png");
-  for (let j = 0; j < 1000; j++) {
+  imgDest = images.read("/sdcard/Pictures/snow.png");
+  for (let j = 0; j < 5000 * 100; j++) {
     img = captureScreen();
     rt = images.matchTemplate(img, imgDest, {
       threshold: 0.7,
-      max: 5,
+      max: 8,
     });
     for (let i = 0; i < rt.matches.length; i++) {
       press(rt.matches[i].point.x + 20, rt.matches[i].point.y + 40, 10);
       // log(rt.matches[i].point.x + 20, rt.matches[i].point.y + 20, i);
     }
-    if (j % 10 == 0) {
+    if (j % 50 == 0) {
       p = textMatches(/(Share you win)|(Play)/).findOne(30);
       if (p) {
         log("exit", p.text());
@@ -34,12 +36,7 @@ function play() {
   if (imgDest) imgDest.recycle();
   if (p && p.text() == "Share you win") {
     log("share");
-    p = className("android.widget.ImageView").desc("Go back").findOne(30);
-    if (p) {
-      log(p.bounds());
-      p.click();
-      sleep(1000);
-    }
+    sleep(1000);
   }
 }
 function start() {
@@ -63,10 +60,10 @@ function start() {
 
 module.exports = { start };
 // start();
+// text("Claim").click();
 // if (!requestScreenCapture()) {
 //   toast("请求截图失败");
 //   exit();
 // }
 
-// play();
 // press(84, 360, 20);

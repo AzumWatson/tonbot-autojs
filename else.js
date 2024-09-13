@@ -1,4 +1,5 @@
 let addr = "https://t.me/else_app_bot/start?startapp=ref=elsexcfmt2y1";
+let utils = require("/sdcard/sc/utils.js");
 function taptap() {
   p = className("android.view.View").desc("Collect").findOne(1000);
   if (p) {
@@ -90,6 +91,28 @@ function start() {
 // utils.checkWidget(0, 416, 480, 848);
 module.exports = { start };
 // start();
+
+function upgrade(level, next, wait) {
+  let reg = /lvl \d+/;
+  let p = textMatches(reg).findOne(1000);
+  if (p) {
+    do {
+      found = false;
+      ps = textMatches(reg).untilFind();
+      for (let i = 0; i < ps.length; i++) {
+        let p = ps[i];
+        let lvl = p.text().split(" ")[1];
+        if (lvl < level) {
+          p.parent().click();
+          text(next).findOne(2000).click();
+          sleep(wait);
+          found = true;
+        }
+      }
+    } while (found);
+  }
+}
+// upgrade(10, "Get", 2 * 1000);
 // p = className("android.widget.Button").findOne(100);
 // log(p);
 // start();

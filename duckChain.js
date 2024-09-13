@@ -12,6 +12,7 @@ function start() {
       if (p) {
         log("click go");
         p.click();
+        sleep(5000);
       }
     }
   }

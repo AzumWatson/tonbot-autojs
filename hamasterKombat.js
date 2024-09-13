@@ -34,8 +34,13 @@ function checkIn() {
     .findOne(1000);
   if (daily.parent().child(2).bounds().width() > 20) {
     daily.parent().click();
-    className("android.widget.Button").text("Claim").findOne(5000).click();
-    sleep(6000);
+    p = className("android.widget.Button").text("Claim").findOne(5000);
+    if (p) {
+      p.click();
+      sleep(6000);
+    }
+    Back();
+    sleep(1000);
   }
 }
 function refull() {
@@ -57,12 +62,12 @@ function refull() {
 }
 function start() {
   app.openUrl(addr);
-  p = textMatches("/d+.*/.*d+00/").findOne(60 * 1000);
+  p = textMatches("/(d+.*/.*d+00)|(Claim)|(.*Thank you.*)/").findOne(60 * 1000);
   if (!p) {
     log("not wait");
     return;
   }
-  sleep(3000);
+  sleep(1000);
   try {
     count = 0;
     reg = /(Claim)|(Close)|(Thank you.*)/;
@@ -74,37 +79,199 @@ function start() {
     taptap();
     refull();
     checkIn();
+    games();
   } catch (e) {
     console.log(e);
   }
 }
+function morse(input) {
+  const morse = [
+    ".-",
+    "-...",
+    "-.-.",
+    "-..",
+    ".",
+    "..-.",
+    "--.",
+    "....",
+    "..",
+    ".---",
+    "-.-",
+    ".-..",
+    "--",
+    "-.",
+    "---",
+    ".--.",
+    "--.-",
+    ".-.",
+    "...",
+    "-",
+    "..-",
+    "...-",
+    ".--",
+    "-..-",
+    "-.--",
+    "--..",
+  ];
+  let output = [];
+  for (let i = 0; i < input.length; i++) {
+    let index = input[i].charCodeAt(0) - 97;
+    output.push(morse[index]);
+  }
+  return output;
+}
 
-const key = ["---", "-.", "-.-.", "....", ".-", "..", "-."]; //ONCHAIN
 function sendKey(key) {
+  const start = Date.now();
   for (let i = 0; i < key.length; i++) {
     if (key[i] == ".") {
-      utils.randomPress(255, 709, 20, 60);
+      // sleep(50);
+      utils.randomPress(160, 760, 1, 80);
     } else {
-      utils.randomPress(255, 709, 20, 1000);
+      swipe(160, 760, 170, 760, 1000);
     }
-    sleep(180);
+    sleep(400);
   }
 }
-function cipher() {
-  t = 350;
-  for (let i = 0; i < key.length - 4; i++) {
+function cipher(input) {
+  let key = morse(input);
+  // key = ["..---", "—....", "-----", "----.", "..---", "....-"];
+  log(key);
+  for (let i = 0; i < key.length; i++) {
+    log(input[i], key[i]);
     sendKey(key[i]);
-    sleep(4000);
+    sleep(2200);
   }
 }
-// cipher();
-// sendKey(key[3]);
+
+const sites = [
+  { site: "bouncemasters", name: "bouncemasters" },
+  { site: "stone-age", name: "stone-age" },
+  { site: "fluff-crusade", name: "fluff-crusade" },
+  { site: "tile-trio", name: "tile-trio" },
+  { site: "mow-and-trim", name: "mow-and-trim-2" },
+  { site: "train-miner", name: "train-miner-keys-generator" },
+  { site: "chain-cube-2048", name: "chain-cube-2048" },
+  { site: "merge-away", name: "merge-away-key-generator" },
+  { site: "zoopolis", name: "zoopolis" },
+  { site: "twerk-race", name: "twerk-race-key-generator" },
+  { site: "polysphere", name: "polysphere" },
+];
+
+function getSiteKey(siteName) {
+  const baseUrl = "http://oc2.027mango.com:3000/getkey";
+  const url = `${baseUrl}?sitename=${siteName}`;
+
+  try {
+    // 使用 Auto.js 的 http.get 方法进行同步请求
+    const response = http.get(url);
+
+    if (response.statusCode != 200) {
+      throw new Error(`HTTP 错误! 状态: ${response.statusCode}`);
+    }
+
+    const data = JSON.parse(response.body.string());
+    return data.key;
+  } catch (error) {
+    console.error(`获取 ${siteName} 的 key 时出错:`, error);
+    return null;
+  }
+}
+// log(getSiteKey("stone-age"));
+function fillSite(item) {
+  let siteText = item.text().toLowerCase().replace(/ /g, "-");
+  const findSite = sites.find((site) => site.site === siteText);
+  item.parent().click();
+  sleep(1000);
+  let runcount = 10;
+  let redeem = className("android.widget.Button").text("Redeem").findOne(5000);
+  if (!redeem) {
+    log("no redeem");
+    return;
+  }
+  do {
+    let p = utils.ocrMatches(/\d+\/\d+/, 100, 3);
+    if (p) {
+      let count = p[0].text.split("/");
+      if (count[0] < count[1]) {
+        let redeem = className("android.widget.Button").findOne(2000);
+        if (redeem) {
+          let key = getSiteKey(findSite.name);
+          let blank = className("android.widget.EditText").findOne(2000);
+          blank.setText(key);
+          sleep(1000);
+          redeem.click();
+          sleep(1000);
+          if (text("Claim").findOne(5000)) {
+            className("android.widget.Button")
+              .text("Claim")
+              .findOne(5000)
+              .click();
+            sleep(1000);
+          }
+        }
+      } else {
+        log("no count");
+        break;
+      }
+    }
+    runcount--;
+  } while (true && runcount > 0);
+  className("android.widget.ImageView").desc("Go back").findOne().click();
+  sleep(1000);
+}
+function games() {
+  let p = className("android.widget.Image").text("mini_game").findOne(2000);
+  if (p) {
+    p.parent().parent().click();
+    sleep(1000);
+  } else {
+    log("no mini_game");
+    return;
+  }
+  p = className("android.widget.TextView").text("Games").findOne(3000);
+  if (p) {
+    p.click();
+    sleep(3000);
+    let ps = className("android.widget.TextView").untilFind();
+    for (let i = 0; i < ps.length; i++) {
+      let item = ps[i];
+      let siteText = item.text().toLowerCase().replace(/ /g, "-");
+      if (sites.some((site) => site.site === siteText)) {
+        let countFiled = item
+          .parent()
+          .findOne(textMatches(/\d+\/\d+/))
+          .text()
+          .split("/");
+        if (countFiled[0] < countFiled[1]) {
+          log(siteText, countFiled);
+          fillSite(item);
+        }
+      }
+    }
+  }
+}
+function findTarget(targer) {
+  p = textContains(targer).findOne(1000);
+  if (p) {
+    ps = textContains(targer).untilFind();
+    for (let i = 0; i < ps.length; i++) {
+      log(i, ps[i].text());
+    }
+  }
+}
+// findTarget("Legal opinion");
 module.exports = { start };
 // start();
-
-
-// cipher();
-// utils.checkWidget(0, 465, 480, 854);
+// games();
+// let p = utils.ocrMatches(/\d+\/\d+/, 100, 3);
+// log(p);
+// cipher("inspire");
+// sendKey("-.-");
+// sendKey("-.--");
+// sendKey("-.-.");
+//, '..', '...', '-', '.', '.-.'
+// utils.checkWidget(0, 465, 480, 854); v
 // taptap();
 // refull();
 // p = text("Full energy").findOne(1000);
