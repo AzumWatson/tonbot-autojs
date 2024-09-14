@@ -29,7 +29,7 @@ function taptap() {
   }
 }
 function start() {
-  //   app.openUrl(addr);
+    app.openUrl(addr);
   if (
     className("android.widget.TextView")
       .text("Petition")
@@ -44,8 +44,8 @@ function start() {
     log("not wait");
   }
 }
-// module.exports = { start };
-start();
+module.exports = { start };
+// start();
 // checkIn();
 // a = textMatches(/\d+ \/ \d+/)
 //   .findOne(1000)

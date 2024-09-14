@@ -68,7 +68,7 @@ function fight() {
           if (p) {
             let img, imgDest, rt;
             for (let i = 0; i < 60; i++) {
-              imgDest = images.read("/sdcard/Pictures/back.png");
+              imgDest = images.read("/sdcard/windows/Pictures/back.png");
               img = captureScreen();
               rt = images.matchTemplate(img, imgDest, {
                 threshold: 0.7,
@@ -110,7 +110,6 @@ function start() {
   }
 }
 module.exports = { start };
-// start();
 // start();
 // if (!requestScreenCapture()) {
 //   toast("请求截图失败");

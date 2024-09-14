@@ -3,4 +3,4 @@ function start() {
   app.openUrl(addr);
 }
 // module.export = { start };
-start();
+// start();

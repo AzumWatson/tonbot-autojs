@@ -80,15 +80,13 @@ function start() {
   app.openUrl(addr);
   let reg = /(.*rain.*)/;
   if (textMatches(reg).findOne(60 * 1000)) {
-    p = text("Close").findOne(100);
+    p = textMatches(/(Close)|(Ok)/).findOne(3000);
     if (p) p.click();
     taptap();
     fullEnergy();
     daily();
   }
 }
-// utils = require("/sdcard/sc/utils.js");
-// utils.checkWidget(0, 416, 480, 848);
 module.exports = { start };
 // start();
 
@@ -113,9 +111,7 @@ function upgrade(level, next, wait) {
   }
 }
 // upgrade(10, "Get", 2 * 1000);
-// p = className("android.widget.Button").findOne(100);
-// log(p);
-// start();
+
 // taptap();
 // fullEnergy();
 // log(w.text());

@@ -164,22 +164,51 @@ if (!requestScreenCapture()) {
   exit();
 }
 
-function upgrade(level, wait) {
+function upgrade(level, next, wait) {
   let reg = /lvl \d+/;
   let p = textMatches(reg).findOne(1000);
+  let lastTime = 0;
   if (p) {
-    ps = textMatches(reg).untilFind();
-    for (let i = 0; i < ps.length; i++) {
-      let p = ps[i];
-      let lvl = p.text().split(" ")[1];
-      if (lvl < level) {
-        p.parent().click();
-        text("Go ahead").findOne(2000).click();
-        sleep(wait);
+    let ignore = [];
+    do {
+      found = false;
+      // log("start find");
+      ps = className("android.widget.TextView").textMatches(reg).untilFind();
+      // log("start", ps.length);
+      for (let i = 0; i < ps.length; i++) {
+        let p = ps[i];
+        let lvl = p.text().split(" ")[1];
+        if (ignore.includes(i)) {
+          continue;
+        }
+        try {
+          // log("check", i, lvl);
+          if (lvl < level) {
+            p.parent().click();
+            sleep(1000);
+            p = text(next).findOne(2000);
+            let sleepTime = wait + 1000 - (Date.now() - lastTime);
+            sleep(Math.max(sleepTime, 0));
+            // log("sleep", Math.max(sleepTime, 0), sleepTime);
+            p.click();
+            log("ok", i, lvl);
+            found = true;
+            lastTime = new Date().getTime();
+            sleep(2000);
+            break;
+          } else {
+            ignore.push(i);
+          }
+        } catch (e) {
+          ignore.push(i);
+          log("cant upgrade continue", i);
+          // log(e);
+        }
       }
-    }
+    } while (found);
   }
 }
+
 module.exports = {
   captureAndOcr,
   ocrBound,

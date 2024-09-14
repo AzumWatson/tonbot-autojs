@@ -54,7 +54,7 @@ function havest() {
 }
 
 function start() {
-  // app.openUrl(addr);
+  app.openUrl(addr);
   p = textMatches(/\d+\/\d+/).findOne(40 * 1000);
   if (!p) {
     log("banana not found");
@@ -86,7 +86,7 @@ function start() {
   havest();
 }
 
-// module.exports = { start };
+module.exports = { start };
 // start();
 // if (!requestScreenCapture()) {
 //   toast("请求截图失败");

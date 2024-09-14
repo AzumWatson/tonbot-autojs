@@ -266,7 +266,7 @@ module.exports = { start };
 // games();
 // let p = utils.ocrMatches(/\d+\/\d+/, 100, 3);
 // log(p);
-// cipher("inspire");
+// cipher("interest");
 // sendKey("-.-");
 // sendKey("-.--");
 // sendKey("-.-.");

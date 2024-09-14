@@ -84,7 +84,7 @@ tasks = [
   },
   {
     name: "hamasterKombat",
-    task: require(prefix + "hamsasterKombat.js"),
+    task: require(prefix + "hamasterKombat.js"),
     interval: 15 * 60 * 1000,
   },
   {
@@ -112,11 +112,11 @@ tasks = [
     task: require(prefix + "okx.js"),
     interval: 40 * 60 * 1000, //107912
   },
-  {
-    name: "piggy",
-    task: require(prefix + "piggy.js"),
-    interval: 2 * 60 * 60 * 1000,
-  },
+  // {
+  //   name: "piggy",
+  //   task: require(prefix + "piggy.js"),
+  //   interval: 2 * 60 * 60 * 1000,
+  // },
   {
     name: "pingo",
     task: require(prefix + "pingo.js"),
@@ -210,7 +210,7 @@ TaskScheduler.prototype.schedule = function () {
         }
       }
     }
-
+ 
     // 如果没有任务执行，则执行默认任务
     if (!hasExecuted && self.defaultTask) {
       log("start", self.defaultTask.name);
