@@ -134,7 +134,7 @@ function findTarget(target) {
     }
   }
 }
-// module.exports = { start };
+module.exports = { start };
 // start();
 
 function upgrade(level, next, wait) {
@@ -181,7 +181,7 @@ function upgrade(level, next, wait) {
     } while (found);
   }
 }
-upgrade(10, "Go ahead", 10 * 1000);
+// upgrade(1, "Go ahead", 10 * 1000);
 
 function upgradeCard(panelName, cardName) {
   let p = text(panelName).findOne(1000);

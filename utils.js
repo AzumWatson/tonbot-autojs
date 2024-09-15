@@ -194,7 +194,7 @@ function upgrade(level, next, wait) {
             log("ok", i, lvl);
             found = true;
             lastTime = new Date().getTime();
-            sleep(2000);
+            sleep(3000);
             break;
           } else {
             ignore.push(i);

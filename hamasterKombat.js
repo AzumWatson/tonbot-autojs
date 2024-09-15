@@ -145,6 +145,7 @@ function cipher(input) {
 }
 
 const sites = [
+  { site: "hide-ball", name: "hide-ball" },
   { site: "bouncemasters", name: "bouncemasters" },
   { site: "stone-age", name: "stone-age" },
   { site: "fluff-crusade", name: "fluff-crusade" },
@@ -234,7 +235,7 @@ function games() {
     p.click();
     sleep(3000);
     let ps = className("android.widget.TextView").untilFind();
-    for (let i = 0; i < ps.length; i++) {
+    for (let i = 1; i < ps.length; i++) {
       let item = ps[i];
       let siteText = item.text().toLowerCase().replace(/ /g, "-");
       if (sites.some((site) => site.site === siteText)) {
@@ -263,6 +264,7 @@ function findTarget(targer) {
 // findTarget("Legal opinion");
 module.exports = { start };
 // start();
+// utils.upgrade(10, "Go ahead", 3 * 1000);
 // games();
 // let p = utils.ocrMatches(/\d+\/\d+/, 100, 3);
 // log(p);
