@@ -222,6 +222,7 @@ function fillSite(item) {
   sleep(1000);
 }
 function games() {
+  log("games");
   let p = className("android.widget.Image").text("mini_game").findOne(2000);
   if (p) {
     p.parent().parent().click();
@@ -262,13 +263,21 @@ function findTarget(targer) {
   }
 }
 // findTarget("Legal opinion");
-module.exports = { start };
+module.exports = { stat };
 // start();
+// cipher("intrigue");
 // utils.upgrade(10, "Go ahead", 3 * 1000);
+// for (let i = 0; i < 10; i++) {
+//   if ((p = text("New cards").findOne(1000))) {
+//     p.click();
+//     sleep(3000);
+//     utils.upgrade(1, "Go ahead", 3 * 1000);
+//     sleep(4000);
+//   }
+// }
 // games();
 // let p = utils.ocrMatches(/\d+\/\d+/, 100, 3);
 // log(p);
-// cipher("interest");
 // sendKey("-.-");
 // sendKey("-.--");
 // sendKey("-.-.");
@@ -281,3 +290,6 @@ module.exports = { start };
 // checkIn();
 // p = className("android.widget.TextView").text("Full energy").findOne(1000);
 // log(p);
+// games();
+// log(device.board);
+// log(global.className);

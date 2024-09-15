@@ -172,17 +172,20 @@ function upgrade(level, next, wait) {
     let ignore = [];
     do {
       found = false;
-      // log("start find");
+      log("start find");
       ps = className("android.widget.TextView").textMatches(reg).untilFind();
       // log("start", ps.length);
       for (let i = 0; i < ps.length; i++) {
         let p = ps[i];
         let lvl = p.text().split(" ")[1];
-        if (ignore.includes(i)) {
-          continue;
-        }
+        // if (ignore.includes(i)) {
+        //   continue;
+        // }
         try {
-          // log("check", i, lvl);
+          // log("check", p.text());
+          // for (let q = 0; q < p.parent().childCount(); q++) {
+          //   log(p.parent().child(q).text());
+          // }
           if (lvl < level) {
             p.parent().click();
             sleep(1000);
@@ -195,7 +198,7 @@ function upgrade(level, next, wait) {
             found = true;
             lastTime = new Date().getTime();
             sleep(3000);
-            break;
+            continue;
           } else {
             ignore.push(i);
           }
@@ -209,6 +212,35 @@ function upgrade(level, next, wait) {
   }
 }
 
+function upgradeCard(panelName, cardName) {
+  let p = text(panelName).findOne(1000);
+  if (p) {
+    p.click();
+    sleep(1000);
+    p = text(cardName).findOne(1000);
+    if (p) {
+      p.click();
+      sleep(1000);
+    }
+  }
+}
+
+let originalClassName = global.className;
+function newClassName(name) {
+  if (device.board === "lei" && name === "android.widget.TextView") {
+    name = "android.view.View";
+  }
+  return originalClassName(name);
+}
+global.className = newClassName;
+
+//mount pictures
+if (!files.exists("/mnt/windows/Picturdes/")) {
+  log("mount pictures");
+  shell("mkdir /mnt/windows", true);
+  shell("chmod 755 /mnt/windows", true);
+  shell("ln -s /sdcard/Pictures /mnt/windows/Pictures", true);
+}
 module.exports = {
   captureAndOcr,
   ocrBound,
@@ -219,4 +251,5 @@ module.exports = {
   findWidgetInSizeAll,
   screenFindTemplate,
   upgrade,
+  upgradeCard,
 };

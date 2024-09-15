@@ -136,65 +136,11 @@ function findTarget(target) {
 }
 module.exports = { start };
 // start();
+// utils.upgradeCard("Terms", "Cold Wallet");
+// utils.upgrade(1, "Go ahead", 10 * 1000);
 
-function upgrade(level, next, wait) {
-  let reg = /lvl \d+/;
-  let p = textMatches(reg).findOne(1000);
-  let lastTime = 0;
-  if (p) {
-    let ignore = [];
-    do {
-      found = false;
-      // log("start find");
-      ps = className("android.widget.TextView").textMatches(reg).untilFind();
-      // log("start", ps.length);
-      for (let i = 0; i < ps.length; i++) {
-        let p = ps[i];
-        let lvl = p.text().split(" ")[1];
-        if (ignore.includes(i)) {
-          continue;
-        }
-        try {
-          // log("check", i, lvl);
-          if (lvl < level) {
-            p.parent().click();
-            sleep(1000);
-            p = text(next).findOne(2000);
-            let sleepTime = wait + 1000 - (Date.now() - lastTime);
-            sleep(Math.max(sleepTime, 0));
-            // log("sleep", Math.max(sleepTime, 0), sleepTime);
-            p.click();
-            log("ok", i, lvl);
-            found = true;
-            lastTime = new Date().getTime();
-            sleep(2000);
-            break;
-          } else {
-            ignore.push(i);
-          }
-        } catch (e) {
-          ignore.push(i);
-          log("cant upgrade continue", i);
-          // log(e);
-        }
-      }
-    } while (found);
-  }
-}
 // upgrade(1, "Go ahead", 10 * 1000);
 
-function upgradeCard(panelName, cardName) {
-  let p = text(panelName).findOne(1000);
-  if (p) {
-    p.click();
-    sleep(1000);
-    p = text(cardName).findOne(1000);
-    if (p) {
-      p.click();
-      sleep(1000);
-    }
-  }
-}
 // upgradeCard("Blockchain", "TON");
 // function upgrade() {
 //   let reg = /lvl \d+/;

@@ -11,7 +11,7 @@ function play() {
 
   log("start play");
   let img, imgDest, rt;
-  imgDest = images.read("/sdcard/windows/Pictures/snow.png");
+  imgDest = images.read("/mnt/windows/Pictures/snow.png");
   for (let j = 0; j < 5000 * 100; j++) {
     img = captureScreen();
     rt = images.matchTemplate(img, imgDest, {
@@ -58,12 +58,14 @@ function start() {
   }
 }
 
-module.exports = { start };
+// module.exports = { start };
 // start();
+// text("Start").click();
 // text("Claim").click();
 // if (!requestScreenCapture()) {
 //   toast("请求截图失败");
 //   exit();
 // }
-// play();
+play();
 // press(84, 360, 20);
+// log("test");

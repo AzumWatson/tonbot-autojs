@@ -68,7 +68,7 @@ function fight() {
           if (p) {
             let img, imgDest, rt;
             for (let i = 0; i < 60; i++) {
-              imgDest = images.read("/sdcard/windows/Pictures/back.png");
+              imgDest = images.read("/mnt/windows/Pictures/back.png");
               img = captureScreen();
               rt = images.matchTemplate(img, imgDest, {
                 threshold: 0.7,

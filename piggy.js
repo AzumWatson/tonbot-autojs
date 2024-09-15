@@ -4,7 +4,7 @@ const utils = require("/sdcard/sc/utils.js");
 const width = 480;
 const height = 960;
 function clickGoldPiggy() {
-  const imgGoldPiggy = images.read("/sdcard/windows/Pictures/gold_piggy.png");
+  const imgGoldPiggy = images.read("/mnt/windows/Pictures/gold_piggy.png");
   const point = utils.screenFindTemplate(
     imgGoldPiggy,
     100,
@@ -75,7 +75,7 @@ function start() {
     log("not found");
     return false;
   }
-  const imgClose = images.read("/sdcard/windows/Pictures/close.png");
+  const imgClose = images.read("/mnt/windows/Pictures/close.png");
   log(imgClose);
   let img = captureScreen();
   let rt = images.matchTemplate(img, imgClose, {
